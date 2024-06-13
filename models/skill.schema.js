@@ -14,7 +14,7 @@ const skillsetSchema = new Schema({
     proficiency: {
         type: String,
         enum: ['Beginner', 'Intermediate', 'Advanced', 'Expert'],
-        required: false
+        required: true
     },
     image: {
         type: String,

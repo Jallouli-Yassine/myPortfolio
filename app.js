@@ -27,7 +27,7 @@ const projectsRoutes = require("./routes/projectRoots");
 const skillRoutes = require('./routes/skillRoots');
 
 app.use('/skill', skillRoutes);
-app.use('/projects', projectsRoutes);
+app.use('/project', projectsRoutes);
 
 const server = http.createServer(app);
 
