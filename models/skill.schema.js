@@ -6,6 +6,10 @@ const skillsetSchema = new Schema({
         type: String,
         required: true
     },
+    description: {
+        type: String,
+        required: true
+    },
     category: {
         type: String,
         enum: ['Frontend', 'Backend', 'Fullstack', 'Database', 'Framework','tool', 'Other'],

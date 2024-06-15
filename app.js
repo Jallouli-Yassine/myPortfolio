@@ -5,9 +5,11 @@ const bodyParser = require("body-parser");
 const mongoconnection = require("./config/mongo.json");
 const path = require("path");
 const controller = require("./controller/Controller");
+const cors = require("cors"); // Import CORS package
 
 
 const PORT = 3000;
+
 
 // MongoDB Connection
 mongoose.connect(mongoconnection.url)
@@ -20,14 +22,20 @@ mongoose.connect(mongoconnection.url)
 
 const app = express();
 
+// Middleware
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 const projectsRoutes = require("./routes/projectRoots");
 const skillRoutes = require('./routes/skillRoots');
+const testimonialsRouts = require('./routes/testimonialsRoot');
 
 app.use('/skill', skillRoutes);
 app.use('/project', projectsRoutes);
+app.use('/testimonial', testimonialsRouts);
+
+
 
 const server = http.createServer(app);
 

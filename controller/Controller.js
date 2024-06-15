@@ -2,6 +2,7 @@ const express = require("express");
 
 const project = require("../models/project.schema");
 const skill = require("../models/skill.schema");
+const Testimonial = require("../models/testimonials.schema");
 
 exports.addProject = async (req, res) => {
     try {
@@ -37,6 +38,7 @@ exports.addSkill = async (req, res) => {
             category: req.body.category,//'Frontend', 'Backend', 'Fullstack', 'Database', 'Framework','tool', 'Other'
             proficiency: req.body.proficiency,//'Beginner', 'Intermediate', 'Advanced', 'Expert'
             image: req.body.image,
+            description:req.body.description
         });
         res.status(200).send(newSkill);
     } catch (err) {
@@ -54,3 +56,29 @@ exports.getAllSkills = async (req, res) => {
 
 
 };
+
+// Add a new testimonial
+exports.addTestimonial = async (req, res) => {
+    try {
+        const newTestimonial = new Testimonial({
+            name: req.body.name,
+            testimonialText: req.body.testimonialText,
+            photoUrl: req.body.photoUrl,
+            rating: req.body.rating
+        });
+        const savedTestimonial = await newTestimonial.save();
+        res.status(200).json(savedTestimonial);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+}
+
+// Get all testimonials
+exports.allTestimonials = async (req, res) => {
+    try {
+        const testimonials = await Testimonial.find();
+        res.status(200).json(testimonials);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+}
