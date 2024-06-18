@@ -28,6 +28,8 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads/skills', express.static(path.join(__dirname, 'skills')));
+
 
 const projectsRoutes = require("./routes/projectRoots");
 const skillRoutes = require('./routes/skillRoots');
@@ -36,7 +38,6 @@ const testimonialsRouts = require('./routes/testimonialsRoot');
 app.use('/skill', skillRoutes);
 app.use('/project', projectsRoutes);
 app.use('/testimonial', testimonialsRouts);
-
 
 
 const server = http.createServer(app);

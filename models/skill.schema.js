@@ -12,8 +12,8 @@ const skillsetSchema = new Schema({
     },
     category: {
         type: String,
-        enum: ['Frontend', 'Backend', 'Fullstack', 'Database', 'Framework','tool', 'Other'],
-        required: true
+        enum: ['Frontend', 'Backend', 'Fullstack', 'Database', 'FB', 'FF','Tool', 'Other'],
+        required: false
     },
     proficiency: {
         type: String,

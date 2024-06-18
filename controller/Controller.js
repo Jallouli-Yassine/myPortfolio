@@ -7,6 +7,28 @@ const skill = require("../models/skill.schema");
 const Testimonial = require("../models/testimonials.schema");
 
 
+// Endpoint to get image filenames
+exports.getSkillsImageOptions =  (req, res) => {
+    const directoryPath = path.join(__dirname, '../uploads/skills');
+
+    // Read directory and filter for image files
+    fs.readdir(directoryPath, (err, files) => {
+        if (err) {
+            console.error('Error reading directory:', err);
+            return res.status(500).send('Error reading directory');
+        }
+
+        // Filter files to get only image filenames
+        const imageFiles = files.filter(file => {
+            const extname = path.extname(file).toLowerCase();
+            return extname === '.jpg' || extname === '.jpeg' || extname === '.png' || extname === '.gif';
+        });
+
+        // Send the array of image filenames in response
+        res.json(imageFiles);
+    });
+}
+
 exports.addProject = async (req, res) => {
     try {
         // Create the new project first
