@@ -22,10 +22,12 @@ mongoose.connect(mongoconnection.url)
 
 const app = express();
 
+
 // Middleware
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 const projectsRoutes = require("./routes/projectRoots");
 const skillRoutes = require('./routes/skillRoots');

@@ -1,25 +1,45 @@
 const express = require("express");
 
+const fs = require('fs');
+const path = require('path');
 const project = require("../models/project.schema");
 const skill = require("../models/skill.schema");
 const Testimonial = require("../models/testimonials.schema");
 
+
 exports.addProject = async (req, res) => {
     try {
-        const newProjects = await project.create({
+        // Create the new project first
+        const newProject = await project.create({
             title: req.body.title,
             description: req.body.description,
             link: req.body.link,
-            image: req.body.image,
-            type: req.body.type,//static or dynamic
+            image: req.file ? req.file.filename : '',
+            type: req.body.type, // static or dynamic
             hosted: req.body.hosted
         });
-        res.status(200).send(newProjects);
+
+        if (req.file) {
+            const newFilename = `${Date.now()}-${newProject._id}${path.extname(req.file.originalname)}`;
+            const oldPath = path.join(__dirname, '../uploads/', req.file.filename);
+            const newPath = path.join(__dirname, '../uploads/', newFilename);
+
+            // Rename the file
+            fs.rename(oldPath, newPath, (err) => {
+                if (err) throw err;
+                console.log('File renamed successfully');
+            });
+
+            // Update the project with the new filename
+            newProject.image = newFilename;
+            await newProject.save();
+        }
+
+        res.status(200).send(newProject);
     } catch (err) {
         res.status(500).send(err);
     }
 }
-
 exports.getAllProject = async (req, res) => {
     try {
         const allProject = await project.find();
