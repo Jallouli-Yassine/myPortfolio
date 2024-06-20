@@ -67,4 +67,4 @@ const s = app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
 
-s.timeout = 30000; // 20 seconds
+s.timeout = 60000; // 60 seconds
