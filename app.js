@@ -29,21 +29,32 @@ app.use(bodyParser.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/uploads/skills', express.static(path.join(__dirname, 'skills')));
 
+// Allowed origins
+const allowedOrigins = ['https://jallouli-yassine-portfolio.vercel.app', 'http://localhost:4200'];
+
 // Use CORS middleware with specific options
 app.use(cors({
-    origin: 'https://jallouli-yassine-portfolio.vercel.app', // Replace with your frontend URL
+    origin: function (origin, callback) {
+        // Allow requests with no origin (like mobile apps or curl requests)
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.indexOf(origin) === -1) {
+            const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+            return callback(new Error(msg), false);
+        }
+        return callback(null, true);
+    },
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true, // Enable credentials if needed
     optionsSuccessStatus: 204
 }));
 
-// Set explicit CORS headers
-app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "https://jallouli-yassine-portfolio.vercel.app");
-    res.header("Access-Control-Allow-Methods", "GET,HEAD,PUT,PATCH,POST,DELETE");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-    res.header("Access-Control-Allow-Credentials", "true");
-    next();
+// Set explicit CORS headers for preflight requests
+app.options('*', (req, res) => {
+    res.header('Access-Control-Allow-Origin', req.header('Origin'));
+    res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.header('Access-Control-Allow-Credentials', 'true');
+    res.sendStatus(204);
 });
 
 app.use('/skill', skillRoutes);
@@ -71,4 +82,4 @@ const s = server.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
 
-s.timeout = 20000; // 60 seconds
+s.timeout = 60000; // 60 seconds
