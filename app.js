@@ -29,6 +29,7 @@ app.use(cors({
     origin: 'https://jallouli-yassine-portfolio.vercel.app', // Replace with your frontend URL
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true, // Enable credentials if needed
+    optionsSuccessStatus: 204
 }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -62,6 +63,8 @@ io.on('connection', (socket) => {
 app.get('/', (req, res) => {
     res.json({message:"Hello World!"});
 });
-app.listen(PORT, () => {
+const s = app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
+
+s.timeout = 10000; // 20 seconds
