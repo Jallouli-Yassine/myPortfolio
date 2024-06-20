@@ -24,7 +24,12 @@ const app = express();
 
 
 // Middleware
-app.use(cors());
+// Use cors with specific options
+app.use(cors({
+    origin: 'https://jallouli-yassine-portfolio.vercel.app', // Replace with your frontend URL
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true, // Enable credentials if needed
+}));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
