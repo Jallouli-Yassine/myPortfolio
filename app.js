@@ -9,6 +9,7 @@ const mongoconnection = require("./config/mongo.json");
 const projectsRoutes = require("./routes/projectRoots");
 const skillRoutes = require('./routes/skillRoots');
 const testimonialsRouts = require('./routes/testimonialsRoot');
+const controller = require("./controller/controller");
 
 const PORT = 3000;
 
@@ -72,6 +73,10 @@ const io = require("socket.io")(server);
 io.on('connection', (socket) => {
     console.log('A user connected');
     socket.emit('user_connected', { message: 'A user connected' });
+
+    socket.on('add-project', () => {
+        io.emit('getProjects', controller.getAllProjectSOCKET());
+    });
 
     socket.on('disconnect', () => {
         console.log('A user disconnected');

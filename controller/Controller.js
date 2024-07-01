@@ -70,7 +70,6 @@ exports.getAllProject = async (req, res) => {
         res.status(500).send(err);
     }
 
-
 };
 
 exports.addSkill = async (req, res) => {
@@ -124,3 +123,18 @@ exports.allTestimonials = async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 }
+
+
+
+
+exports.getAllProjectSOCKET = async () => {
+    try {
+        const allProject = await project.find();
+        return {
+            allProject:allProject
+        }
+    } catch (err) {
+        console.log(err)
+    }
+
+};
