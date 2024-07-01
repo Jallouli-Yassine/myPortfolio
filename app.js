@@ -9,6 +9,7 @@ const mongoconnection = require("./config/mongo.json");
 const projectsRoutes = require("./routes/projectRoots");
 const skillRoutes = require('./routes/skillRoots');
 const testimonialsRouts = require('./routes/testimonialsRoot');
+const {getAllProjectSOCKET} = require("./controller/controller");
 
 const PORT = 3000;
 
@@ -66,20 +67,28 @@ app.get('/', (req, res) => {
 });
 
 const server = http.createServer(app);
-
+//emit tabath w on tekbel
 // Socket.IO setup
 const io = require("socket.io")(server);
 io.on('connection', (socket) => {
     console.log('A user connected');
+    socket.emit('user_connected', { message: 'A user connected' });
 
-    // Handle disconnection
+    socket.on('add-project',async () => {
+        let data = await  getAllProjectSOCKET();
+        io.emit('getProjects', data);
+
+    });
+
     socket.on('disconnect', () => {
-        console.log('User disconnected');
+        console.log('A user disconnected');
+        socket.emit('user_disconnect', { message: 'A user disconnect' });
     });
 });
+
 
 const s = server.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
 
-s.timeout = 60000; // 60 seconds
+s.timeout = 60000; // 20 seconds
