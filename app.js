@@ -74,9 +74,6 @@ io.on('connection', (socket) => {
     console.log('A user connected');
     socket.emit('user_connected', { message: 'A user connected' });
 
-    socket.on('add-project', () => {
-        io.emit('getProjects', controller.getAllProjectSOCKET());
-    });
 
     socket.on('disconnect', () => {
         console.log('A user disconnected');
