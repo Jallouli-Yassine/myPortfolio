@@ -66,15 +66,16 @@ app.get('/', (req, res) => {
 });
 
 const server = http.createServer(app);
-
+//emit tabath w on tekbel
 // Socket.IO setup
 const io = require("socket.io")(server);
 io.on('connection', (socket) => {
-    console.log('A user connected');
+    // send a message to the client
+    socket.emit('user_connected', { message: 'A user connected' });
 
     // Handle disconnection
     socket.on('disconnect', () => {
-        console.log('User disconnected');
+        socket.emit('user_disconnect', { message: 'A user disconnect' });
     });
 });
 
@@ -82,4 +83,4 @@ const s = server.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
 
-s.timeout = 60000; // 60 seconds
+s.timeout = 20000; // 20 seconds
