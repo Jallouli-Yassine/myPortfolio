@@ -74,6 +74,9 @@ io.on('connection', (socket) => {
     console.log('A user connected');
     socket.emit('user_connected', { message: 'A user connected' });
 
+    socket.on('add-project', () => {
+        io.emit('getProjects', controller.getAllProjectSOCKET());
+    });
 
     socket.on('disconnect', () => {
         console.log('A user disconnected');
@@ -86,4 +89,4 @@ const s = server.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
 
-s.timeout = 20000; // 20 seconds
+s.timeout = 60000; // 20 seconds
