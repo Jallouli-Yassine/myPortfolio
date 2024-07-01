@@ -70,14 +70,15 @@ const server = http.createServer(app);
 // Socket.IO setup
 const io = require("socket.io")(server);
 io.on('connection', (socket) => {
-    // send a message to the client
+    console.log('A user connected');
     socket.emit('user_connected', { message: 'A user connected' });
 
-    // Handle disconnection
     socket.on('disconnect', () => {
+        console.log('A user disconnected');
         socket.emit('user_disconnect', { message: 'A user disconnect' });
     });
 });
+
 
 const s = server.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
